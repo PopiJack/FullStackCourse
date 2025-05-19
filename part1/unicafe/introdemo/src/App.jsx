@@ -20,12 +20,14 @@ const Statistics = (props) => {
     )
   }
   return <table>
+    <tbody>
       <StatisticLine text = "good" value = {props.good} sufix = ""/>
       <StatisticLine text = "neutral" value = {props.neutral} sufix = "" />
       <StatisticLine text = "bad" value = {props.bad} sufix = "" />
       <StatisticLine text = "total" value = {props.total} sufix = "" />
       <StatisticLine text = "average" value = {props.average} sufix = "" />
       <StatisticLine text = "positive" value = {props.positivePercent} sufix = "%" />
+    </tbody>
   </table>   
 }
 
