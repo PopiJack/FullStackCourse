@@ -13,9 +13,20 @@ const App = () => {
     const personObject = {
       name: newName,
     }
+
     
-    setPersons(persons.concat(personObject))
+    var isInPersons = function(person) {
+      return person.name === newName
+    }
+
+    if (persons.find(isInPersons)) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      setPersons(persons.concat(personObject))
+    }
     setNewName('')
+    
+    
   }
 
   const handleNamesChange = (event) => {
@@ -29,6 +40,7 @@ const App = () => {
       <form onSubmit={addName}>
         <div>
           name: <input 
+          value={newName}
           onChange={handleNamesChange}
           />
         </div>
