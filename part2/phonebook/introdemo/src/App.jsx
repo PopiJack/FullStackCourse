@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
+import Notification from './components/Notification'
+import './index.css'
 
 
 const SearchFilter = ({searchName, handleSearchChange}) => {
@@ -59,6 +61,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setNewSearchName] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorOccured, setErrorOccured] = useState(false)
 
   useEffect(() => {
     personService
@@ -90,6 +94,17 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.map(person => person.id === id ? returnedPerson.data : person ))
         })
+        .catch(error => {
+          setErrorOccured(true)
+          setErrorMessage(
+            `Information of ${changedPerson.name} has already been removed from server `
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+            setErrorOccured(false)
+          }, 3000)
+          setPersons(persons.filter(personInList => personInList.id !== id))
+        })
     }
 
     if (persons.find(isInPersons)) {
@@ -102,6 +117,14 @@ const App = () => {
         .create(personObject)
         .then(response => {
           setPersons(persons.concat(personObject))
+          setErrorOccured(false)
+          setErrorMessage(
+            `Person '${personObject.name}' was added to the list`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+            setErrorOccured(false)
+          }, 3000)
           setNewName('')
           setNewNumber('')
         })
@@ -157,6 +180,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message = {errorMessage} errorOccured={errorOccured}/>
       <SearchFilter searchName={searchName} handleSearchChange={handleSearchChange}/>
       <h2>add a new</h2>
       <Form addName={addName} newName={newName}  handleNamesChange={handleNamesChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
