@@ -174,7 +174,7 @@ const App = () => {
   const peopleToShow = showAll 
     ? persons 
     : persons.filter (person => {
-      return person.name.toLowerCase().trim().includes(searchName)
+      return person.name.toLowerCase().trim().includes(searchName.toLowerCase())
     })
 
   return (
