@@ -1,11 +1,40 @@
 import { useEffect, useState } from 'react'
 import WeatherService from './services/WeatherService'
-
 const SearchCountry = ({country}) => {
-  return (
-    <p>{country.name.common}</p>
-  )
+  const [isAllowedToShow, setIsAllowedToShow] = useState(false)
+
+
+  function handleButtonClick() {
+    setIsAllowedToShow(!isAllowedToShow)
+  }
+
+  return <div>
+    <p>{country.name.common} <button onClick={handleButtonClick}>Show</button></p>
+    <DetailsPart country={country} isAllowedToShow={isAllowedToShow}/>
+  </div>
 }
+
+const DetailsPart = ({country, isAllowedToShow}) => {
+  if (isAllowedToShow) {
+    return <CountryDetails country={country} />
+  }
+}
+
+const CountryDetails = ({country}) => {
+  return <div>
+      <h1>{country.name.common}</h1>
+      <p>Capital: {country.capital}</p>
+      <p>Area: {country.area} m2</p>
+      <h2>Languages</h2>
+      <ul>
+        {Object.values(country.languages).map(
+          language => <li key={language}>{language}</li>
+        )}
+      </ul>
+      <img src={country.flags.png} alt="flag of country" />
+    </div>
+}
+
 
 
 const SearchResultCountries = (searchResult) => {
@@ -22,17 +51,14 @@ const SearchResultCountries = (searchResult) => {
   }
 
   const oneCountryToReturn = (returnedCountry) => {
+    return <CountryDetails country={returnedCountry} />
+  }
+
+  const rightAmountOfCountriesReturned = (returnedCountries) => {
     return <div>
-      <h1>{returnedCountry.name.common}</h1>
-      <p>Capital: {returnedCountry.capital}</p>
-      <p>Area: {returnedCountry.area} m^2</p>
-      <h2>Languages</h2>
-      <ul>
-        {Object.values(returnedCountry.languages).map(
-          language => <li key={language}>{language}</li>
-        )}
-      </ul>
-      <img src={returnedCountry.flags.png} alt="flag of country" />
+      {returnedCountries.map(
+        country => <SearchCountry key={country.area} country={country} />
+      )}
     </div>
   }
 
@@ -45,11 +71,7 @@ const SearchResultCountries = (searchResult) => {
     const onlyCountry = searchResult.results[0]
     return oneCountryToReturn(onlyCountry)
   } else {
-    return <div>
-    {searchResult.results.map(
-      country => <SearchCountry key={country.area} country={country} />
-    )}
-  </div>
+    return rightAmountOfCountriesReturned(searchResult.results)
   }
 }
 
