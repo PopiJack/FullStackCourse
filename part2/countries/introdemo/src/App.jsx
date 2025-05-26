@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
+import CountriesService from './services/CountriesService'
 import WeatherService from './services/WeatherService'
 const SearchCountry = ({country}) => {
   const [isAllowedToShow, setIsAllowedToShow] = useState(false)
-
 
   function handleButtonClick() {
     setIsAllowedToShow(!isAllowedToShow)
@@ -21,6 +21,17 @@ const DetailsPart = ({country, isAllowedToShow}) => {
 }
 
 const CountryDetails = ({country}) => {
+  const [weatherResults, setWeatherResults] = useState(null)
+
+
+ useEffect(() => {
+    WeatherService.getWeatherByCity(country.capital[0]).then(
+      (data) => setWeatherResults(data)
+    )
+  }, [country])
+  
+
+  console.log(weatherResults)
   return <div>
       <h1>{country.name.common}</h1>
       <p>Capital: {country.capital}</p>
@@ -32,6 +43,16 @@ const CountryDetails = ({country}) => {
         )}
       </ul>
       <img src={country.flags.png} alt="flag of country" />
+      {weatherResults ? (
+        <>
+        <h2>Weather in {country.capital[0]}</h2>
+      <p>Temperature {Math.round((weatherResults.main.feels_like - 273.5) * 100)/100} Celsius</p>
+      <img src={`https://openweathermap.org/img/wn/${weatherResults.weather[0].icon}@2x.png`} />
+      <p>Wind {weatherResults.wind.speed} m/s</p>
+        </>
+      ) : (
+        <p>Loading weather...</p>
+      )}
     </div>
 }
 
@@ -82,7 +103,7 @@ const App = () => {
   const [searchResult, setSearchResult] = useState([])
 
   useEffect(() => {
-    WeatherService.getAll().then(
+    CountriesService.getAll().then(
       (data) => {
         setApiResult(data)
       }
