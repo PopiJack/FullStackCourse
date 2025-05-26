@@ -9,7 +9,6 @@ const SearchCountry = ({country}) => {
 
 
 const SearchResultCountries = (searchResult) => {
-
   const nothingToReturn = () => {
     return <div>
       nothing to return
@@ -61,9 +60,8 @@ const App = () => {
   const [searchResult, setSearchResult] = useState([])
 
   useEffect(() => {
-    const text = WeatherService.getAll().then(
+    WeatherService.getAll().then(
       (data) => {
-        
         setApiResult(data)
       }
     )
@@ -77,7 +75,6 @@ const App = () => {
   }
 
   const handleSearchResult = (enteredInSearch) => {
-      
       const filteredCountries = apiResult.filter(result =>{
         return result.name.common.toLowerCase().includes(enteredInSearch.toLowerCase())
         }
