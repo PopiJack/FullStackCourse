@@ -15,7 +15,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(express.json())
 app.use(requestLogger)
-app.use(unknownEndpoint)
+
 
 let notes = [
     {
@@ -99,3 +99,5 @@ const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
+
+app.use(unknownEndpoint)
