@@ -34,12 +34,12 @@ if (process.argv.length === 3) {
     mongoose.connection.close()
     })
 } else if (process.argv.length === 5){    
-    const personContact = new Person({
+    const personPerson = new Person({
         name: name,
         number: phoneNumber,
     })
 
-    personContact.save().then(result => {
+    personPerson.save().then(result => {
         console.log(`added ${result.name} number ${result.number} to ${nameOfCluster}`)
         mongoose.connection.close()
     })
