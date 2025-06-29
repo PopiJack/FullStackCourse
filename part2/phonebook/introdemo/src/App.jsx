@@ -78,7 +78,6 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: newName,
     }
 
     var isInPersons = function(person) {
@@ -115,8 +114,8 @@ const App = () => {
     } else {
       personService
         .create(personObject)
-        .then(response => {
-          setPersons(persons.concat(personObject))
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson.data))
           setErrorOccured(false)
           setErrorMessage(
             `Person '${personObject.name}' was added to the list`
