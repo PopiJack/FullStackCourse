@@ -11,6 +11,8 @@ const errorHandler = (error, request, response, next) => {
 
     if (error.name === 'CastError') {
         return response.status(400).send({error: 'malformated id'})
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({error: error.message})
     }
 
     next(error)
@@ -74,7 +76,7 @@ const generateId = () => {
     return String(maxId + 1)
 }
 
-app.post('/api/notes', (request, response) => {
+app.post('/api/notes', (request, response, next) => {
     const body = request.body
 
     if (!body.content) {
@@ -83,13 +85,19 @@ app.post('/api/notes', (request, response) => {
         })
     }
 
-    const note = {
+    const note = new Note ({
         content: body.content,
         important: body.important || false,
         id: generateId(),
-    }
+    })
 
-    notes = notes.concat(note)
+    note.save()
+        .then(savedNote => {
+            response.json(savedNote)
+        })
+        .catch(error => next(error))
+
+    Note = Note.concat(note)
 
     response.json(note)
 })
