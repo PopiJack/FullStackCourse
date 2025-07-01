@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
-    console.log('give password as argument')
-    process.exit(1)
-} 
+  console.log('give password as argument')
+  process.exit(1)
+}
 
 const nameOfCluster = 'phoneBook'
 const password = process.argv[2]
@@ -18,31 +18,31 @@ mongoose.connect(url)
 
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+  name: String,
+  number: String,
 })
 
 const Person = mongoose.model('Person', personSchema)
 
 if (process.argv.length === 3) {
-    console.log(nameOfCluster)
-    Contact.find({}).then(result => {
-        result.forEach(person => {
-            console.log(`${person.name} ${person.number}`)
-        }
+  console.log(nameOfCluster)
+  Person.find({}).then(result => {
+    result.forEach(person => {
+      console.log(`${person.name} ${person.number}`)
+    }
     )
     mongoose.connection.close()
-    })
-} else if (process.argv.length === 5){    
-    const personPerson = new Person({
-        name: name,
-        number: phoneNumber,
-    })
+  })
+} else if (process.argv.length === 5){
+  const personPerson = new Person({
+    name: name,
+    number: phoneNumber,
+  })
 
-    personPerson.save().then(result => {
-        console.log(`added ${result.name} number ${result.number} to ${nameOfCluster}`)
-        mongoose.connection.close()
-    })
+  personPerson.save().then(result => {
+    console.log(`added ${result.name} number ${result.number} to ${nameOfCluster}`)
+    mongoose.connection.close()
+  })
 }
 
 
