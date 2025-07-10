@@ -44,18 +44,16 @@ const mostBlogs = (blogs) => {
 } 
 
 const mostLikes = (blogs) => {
-  const authors = lodash.mapValues(blogs, function(o) { return o.author })
+  const authors = lodash.mapValues(blogs, function(o) {return o.author})
   console.log(authors)
 
-  const groupedAuthors = lodash.groupBy(authors)
-  console.log(groupedAuthors)  
-
-  const authorWithNumberOfLikes = lodash.mapValues(groupedAuthors, function(o) { return o.length })
-  console.log(authorWithNumberOfLikes)
-
+  const likes = lodash.mapValues(blogs, ({author, likes}) => [author, likes])
+  console.log(likes)
 
 
 }
+
+//TODO: finishe exercise 4.7
 
 module.exports = {
     totalLikes,
